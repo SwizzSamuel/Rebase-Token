@@ -5,12 +5,12 @@ pragma solidity ^0.8.13;
 import {TokenPool} from "@ccip/contracts/ccip/pools/TokenPool.sol";
 import {Pool} from "@ccip/contracts/ccip/libraries/Pool.sol";
 
-import {IERC20} from "@ccip/contracts/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/IERC20.sol";\
+import {IERC20} from "@ccip/contracts/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/IERC20.sol";
 import {IRebaseToken} from "./interfaces/IRebaseToken.sol";
 
 contract RebaseTokenPool is TokenPool {
     constructor(IERC20  _token, address[] memory _allowlist, address _rmnProxy, address _router) 
-        TokenPool(_token, 18, _allowlist, _rmnProxy, _router) 
+        TokenPool(_token, _allowlist, _rmnProxy, _router) 
     {}
 
     function lockOrBurn(Pool.LockOrBurnInV1 calldata lockOrBurnIn) 
@@ -18,8 +18,7 @@ contract RebaseTokenPool is TokenPool {
         returns (Pool.LockOrBurnOutV1 memory lockOrBurnOut) 
     {
         _validateLockOrBurn(lockOrBurnIn);
-        address originalSender = abi.decode(lockOrBurnIn.originalSender, (address));
-        uint256 userInterestRate = IRebaseToken(address(i_token)).getUserRate(originalSender);
+        uint256 userInterestRate = IRebaseToken(address(i_token)).getUserRate(lockOrBurnIn.originalSender);
         IRebaseToken(address(i_token)).burn(address(this), lockOrBurnIn.amount * userInterestRate / 10000);
         lockOrBurnOut = Pool.LockOrBurnOutV1({
             destTokenAddress: getRemoteToken(lockOrBurnIn.remoteChainSelector),
