@@ -160,7 +160,7 @@ contract CrossChainTest is Test {
         uint256 remoteBalanceBefore = remoteToken.balanceOf(owner);
         ccipLocalSimulatorFork.switchChainAndRouteMessage(remoteFork);
         uint256 remoteBalanceAfter = remoteToken.balanceOf(owner);
-        assertEq(remoteBalanceAfter, remoteBalanceBefore + amountToBridge);
+        assertEq(remoteBalanceAfter, remoteBalanceBefore - amountToBridge);
         uint256 remoteUserInterestRate = remoteToken.getUserRate(owner);
 
         assertEq(localUserInterestRate, remoteUserInterestRate);
