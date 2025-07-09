@@ -8,7 +8,7 @@ remappings = [
     "@ccip/contracts/=lib/ccip/contracts/src/v0.8/",
     "@chainlink/local/=lib/chainlink-local/"
 ]
-FOUNDRY_DISABLE_NIGHTLY_WARNING = true
+FOUNDRY_DISABLE_NIGHTLY_WARNING = 1
 viaIR = true
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
